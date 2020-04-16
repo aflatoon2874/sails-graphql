@@ -34,7 +34,7 @@ module.exports = {
     `, // end of types
 
     queries: `
-      getBooks(filter: String): [BookResponse] @authorize(scope: "book:read") @authenticate 
+      getBooks(filter: String): [BookResponse] @authorize(scope: "book:read", returnType: "array") @authenticate(returnType: "array")
       getBook(id: Int!): BookResponse @authorize(scope: "book:read") @authenticate
     `, // end of queries
 

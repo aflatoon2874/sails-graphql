@@ -13,9 +13,9 @@ module.exports = {
   _authenticate: async (context) => {
 
     let req = context.req;
+    let message = 'Access denied. You need to be loggedin to access this resource.';
 
     /* Uncomment this sample code and adapt to implement your own JWT authentication
-    let message = 'Access denied. You need to be loggedin to access this resource.';
 
     if (
       !req ||
@@ -88,7 +88,7 @@ module.exports = {
     }
     */
 
-    // When you implement your own authentication mechanism, 
+    // When you implement your own authentication mechanism,
     // remove the hard-coded result variable below.
     let result = {
       id: 1,

@@ -8,8 +8,8 @@ const author = require('./AuthorSchema');
 
 // Construct a schema using the GraphQL schema language
 const typeDefs = `
-  directive @authenticate on FIELD_DEFINITION | FIELD
-  directive @authorize(scope: String!) on FIELD_DEFINITION | FIELD
+  directive @authenticate(returnType: String) on FIELD_DEFINITION | FIELD
+  directive @authorize(scope: String!, returnType: String) on FIELD_DEFINITION | FIELD
 
   type Error {
     code: String!
@@ -64,7 +64,7 @@ const directiveResolvers = {
     if (context.user === undefined) {
       user = await _authenticate(context);
       if (user.errors !== undefined) {
-        return user; // user authentication failed
+        return directiveArgs.returnType === 'array' ? [ user ] : user; // user authentication failed
       }
     }
     return resolve();
@@ -73,7 +73,7 @@ const directiveResolvers = {
   // Will be called when a @authorize directive is applied to a field or field definition.
   async authorize(resolve, parent, directiveArgs, context, info) {
     if (!await _authorize(context.user, directiveArgs.scope)) {
-      return {
+      let err = {
         errors: [
           {
             code: 'E_NO_PERMISSION',
@@ -81,6 +81,7 @@ const directiveResolvers = {
           }
         ]
       };
+      return directiveArgs.returnType === 'array' ? [ err ] : err;
     }
     return resolve();
   }

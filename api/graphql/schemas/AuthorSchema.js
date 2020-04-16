@@ -16,7 +16,7 @@ module.exports = {
         # Country
         country: String
         # Books
-        books: [Book] @authorize(scope: "book:read")
+        books: [Book] @authorize(scope: "book:read", returnType: "array")
       }
 
       input AuthorInput {
@@ -30,7 +30,7 @@ module.exports = {
     `, // end of types
 
     queries: `
-      getAuthors(filter: String): [AuthorResponse] @authorize(scope: "author:read") @authenticate
+      getAuthors(filter: String): [AuthorResponse] @authorize(scope: "author:read", returnType: "array") @authenticate(returnType: "array")
       getAuthor(id: Int!): AuthorResponse @authorize(scope: "author:read") @authenticate
     `, // end of queries
 
