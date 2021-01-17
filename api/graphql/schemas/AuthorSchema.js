@@ -83,7 +83,7 @@ module.exports = {
             }
           };
           const result = await _getBook(args);
-          if (typeof result !== Array) {
+          if (!(result instanceof Array)) {
             return [result];
           }
           return result;
