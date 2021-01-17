@@ -46,34 +46,34 @@ module.exports = {
       getAuthors: async (parent, args, context) => {
         const result = await _getAuthor({ where: args.filter });
         if (!(result instanceof Array)) {
-          return [ result ];
+          return [result];
         }
         if (result.length === 0) {
-          return [ { errors: [ { code: 'I_INFO', message: 'No data matched your selection criteria'}]} ];
+          return [{ errors: [{ code: 'I_INFO', message: 'No data matched your selection criteria' }] }];
         }
         return result;
       },
       getAuthor: async (parent, args, context) => {
-        return _getAuthor(args);
+        return await _getAuthor(args);
       },
     },
 
     mutations: {
       addAuthor: async (parent, args, context) => {
-        return _addAuthor(args.data);
+        return await _addAuthor(args.data);
       },
       updateAuthor: async (parent, args, context) => {
-        return _updateAuthor(args.id, args.data);
+        return await _updateAuthor(args.id, args.data);
       },
       deleteAuthor: async (parent, args, context) => {
-        return _deleteAuthor(args.id);
+        return await _deleteAuthor(args.id);
       },
     },
 
     references: {
 
       Author: {
-        books: (author, _, context) => {
+        books: async (author, _, context) => {
           if (author === null) {
             return null;
           }
@@ -82,9 +82,9 @@ module.exports = {
               author: author.id
             }
           };
-          const result = _getBook(args);
+          const result = await _getBook(args);
           if (typeof result !== Array) {
-            return [ result ];
+            return [result];
           }
           return result;
         },

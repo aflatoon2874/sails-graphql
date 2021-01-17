@@ -50,41 +50,41 @@ module.exports = {
       getBooks: async (parent, args, context) => {
         const result = await _getBook({ where: args.filter });
         if (!(result instanceof Array)) {
-          return [ result ];
+          return [result];
         }
         if (result.length === 0) {
-          return [ { errors: [ { code: 'I_INFO', message: 'No data matched your selection criteria'}]} ];
+          return [{ errors: [{ code: 'I_INFO', message: 'No data matched your selection criteria' }] }];
         }
         return result;
       },
       getBook: async (parent, args, context) => {
-        return _getBook(args);
+        return await _getBook(args);
       },
     },
 
     mutations: {
       addBook: async (parent, args, context) => {
-        return _addBook(args.data);
+        return await _addBook(args.data);
       },
       updateBook: async (parent, args, context) => {
-        return _updateBook(args.id, args.data);
+        return await _updateBook(args.id, args.data);
       },
       deleteBook: async (parent, args, context) => {
-        return _deleteBook(args.id);
+        return await _deleteBook(args.id);
       },
     },
 
     references: {
 
       Book: {
-        author: (book, _, context) => {
+        author: async (book, _, context) => {
           if (book === null) {
             return null;
           }
           const args = {
             id: book.author
           };
-          return _getAuthor(args);
+          return await _getAuthor(args);
         },
 
       },
